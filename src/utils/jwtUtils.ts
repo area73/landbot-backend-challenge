@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
-
-const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
-
+import { config } from "../config";
+// todo: we could provide a better type for the payload
 export const generateToken = (payload: object, expiresIn = "1h") => {
-  return jwt.sign(payload, SECRET_KEY, { expiresIn });
+  return jwt.sign(payload, config.secretKey, { expiresIn });
 };

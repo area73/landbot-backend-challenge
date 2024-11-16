@@ -39,6 +39,7 @@
 - Add body-parser middleware for JSON body parsing.
 - Add JWT middleware for authentication.
   **JSON web token(JWT)** is a JSON Object which is used to securely transfer information over the web(between two parties). It is generally used for authentication systems and can also be used for information exchange.
+- Add test framework Vitest & supertest
 
 2. Create a POST endpoint to receive the JSON body.
 
