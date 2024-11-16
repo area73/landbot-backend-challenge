@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { notify } from "../controllers/apiController";
+import { notifyPayload } from "../middleware/notifyPayloadMiddleware";
 
 export const apiRoutes = {
   notify: "/notify",
@@ -7,6 +8,6 @@ export const apiRoutes = {
 
 const router = Router();
 
-router.post(apiRoutes.notify, notify);
+router.post(apiRoutes.notify, notifyPayload, notify);
 
 export const apiRouter = router;
