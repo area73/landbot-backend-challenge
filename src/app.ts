@@ -1,12 +1,10 @@
 import express, { type Application } from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import { authRouter } from "./routes/authRoutes";
 import { apiRouter } from "./routes/apiRoutes";
 import { config } from "./config";
 import { verifyToken } from "./middleware/authMiddleware";
 
-dotenv.config();
 const app: Application = express();
 
 app
