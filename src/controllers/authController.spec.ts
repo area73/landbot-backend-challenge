@@ -7,10 +7,13 @@ import { getUserByUsername } from "../data/userRepository";
 import type { Mock } from "vitest";
 import bcrypt from "bcrypt";
 
-vi.mock("../data/userRepository", () => ({
-  ...vi.importActual("../data/userRepository"), // Keep other exports intact
-  getUserByUsername: vi.fn(), // Mock this specific function
-}));
+vi.mock(import("../data/userRepository"), async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    getUserByUsername: vi.fn(),
+  };
+});
 
 vi.mock("bcrypt");
 

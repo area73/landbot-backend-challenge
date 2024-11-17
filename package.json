@@ -3,9 +3,11 @@
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
     "build": "tsc",
-    "test": "vitest"
+    "test": "vitest",
+    "test:slack:e2e": "npx ts-node src/testSlackChannel.ts"
   },
   "dependencies": {
+    "@slack/web-api": "^7.7.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
