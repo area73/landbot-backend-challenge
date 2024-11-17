@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import { WebClient } from "@slack/web-api";
-import { SlackChannel } from "./SlackChannel";
+import { SlackChannel } from "./slackChannel";
 
 // Mock the entire @slack/web-api module
 vi.mock("@slack/web-api", () => {
