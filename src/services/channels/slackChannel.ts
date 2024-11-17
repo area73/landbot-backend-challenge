@@ -20,7 +20,7 @@ export class SlackChannel {
         channel: this.channelId,
         text: message,
       });
-
+      console.log("RESPONSE::::::::::", response);
       console.log(`[Slack] Message sent successfully: ${response.ts}`);
     } catch (error) {
       console.error(
