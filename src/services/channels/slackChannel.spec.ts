@@ -1,79 +1,125 @@
 import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import { WebClient } from "@slack/web-api";
-import { SlackChannel } from "./slackChannel";
+import { SlackChannel } from "./SlackChannel";
 
-vi.mock("@slack/web-api", () => ({
-  WebClient: vi.fn(() => ({
-    chat: {
-      postMessage: vi.fn(),
-    },
-  })),
-}));
+// Mock the entire @slack/web-api module
+vi.mock("@slack/web-api", () => {
+  return {
+    WebClient: vi.fn(() => ({
+      chat: {
+        postMessage: vi.fn(),
+      },
+    })),
+  };
+});
 
 describe("SlackChannel", () => {
+  const mockToken = "mock-token";
+  const mockChannelId = "mock-channel-id";
   let slackChannel: SlackChannel;
-  const mockSlackToken = "mock-slack-token";
-  const mockSlackChannelId = "mock-channel-id";
-  const mockWebClient = WebClient as unknown as Mock;
 
+  // Spy on console methods
   beforeEach(() => {
-    // Reset all mocks before each test
-    // vi.clearAllMocks();
-    // slackChannel = new SlackChannel(mockSlackToken, mockSlackChannelId);
+    vi.spyOn(console, "log").mockImplementation(() => {});
+    vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
-  it("should throw an error if slackToken or slackChannelId is missing", () => {
-    expect(() => new SlackChannel("", mockSlackChannelId)).toThrow(
-      "Missing Slack configuration (SLACK_BOT_TOKEN or SLACK_CHANNEL_ID)"
-    );
-
-    expect(() => new SlackChannel(mockSlackToken, "")).toThrow(
-      "Missing Slack configuration (SLACK_BOT_TOKEN or SLACK_CHANNEL_ID)"
-    );
+  // Clear all mocks after each test
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
-  it("should send a message successfully using the Slack API", async () => {
-    const mockPostMessage = mockWebClient().chat.postMessage as Mock;
-    // Simular una respuesta exitosa del Slack API
-    mockPostMessage.mockResolvedValue({ ts: "1234567890.123456" });
-    const message = "Hello, Slack!";
-    slackChannel = new SlackChannel(mockSlackToken, mockSlackChannelId);
-    // Llamar a la función que queremos probar
-    await slackChannel.send(message);
-
-    // Verificar que el mock se haya llamado una vez
-    expect(mockPostMessage).toHaveBeenCalledOnce();
-
-    // Verificar que se haya llamado con los argumentos esperados
-    expect(mockPostMessage).toHaveBeenCalledWith({
-      channel: mockSlackChannelId,
-      text: message,
+  describe("constructor", () => {
+    it("should create an instance with valid parameters", () => {
+      expect(() => {
+        new SlackChannel(mockToken, mockChannelId);
+      }).not.toThrow();
     });
 
-    // Agregar un chequeo opcional para verificar si se está logueando el mensaje
-    const consoleLogSpy = vi.spyOn(console, "log");
-    expect(consoleLogSpy).toHaveBeenCalledWith(
-      "[Slack] Message sent successfully: 1234567890.123456"
-    );
-    consoleLogSpy.mockRestore(); // Restaurar console.log después del test
-  });
+    it("should throw error when token is missing", () => {
+      expect(() => {
+        new SlackChannel("", mockChannelId);
+      }).toThrow("Missing Slack configuration");
+    });
 
-  /*
-  it("should log an error and throw if sending the message fails", async () => {
-    const mockPostMessage = mockWebClient().chat.postMessage as Mock;
-    mockPostMessage.mockRejectedValue(new Error("Slack API error")); // Simulate API error
-
-    const message = "This will fail";
-
-    await expect(slackChannel.send(message)).rejects.toThrow(
-      "Slack notification failed: Cannot read properties of undefined (reading 'ts')"
-    );
-
-    expect(mockPostMessage).toHaveBeenCalledOnce();
-    expect(mockPostMessage).toHaveBeenCalledWith({
-      channel: mockSlackChannelId,
-      text: message,
+    it("should throw error when channel ID is missing", () => {
+      expect(() => {
+        new SlackChannel(mockToken, "");
+      }).toThrow("Missing Slack configuration");
     });
   });
-  */
+
+  describe("send", () => {
+    beforeEach(() => {
+      slackChannel = new SlackChannel(mockToken, mockChannelId);
+    });
+
+    it("should successfully send a message", async () => {
+      const mockTimestamp = "1234567890.123456";
+      const mockMessage = "Test message";
+
+      // Mock successful response
+      const mockPostMessage = vi.fn().mockResolvedValue({ ts: mockTimestamp });
+      (WebClient as unknown as Mock).mockImplementation(() => ({
+        chat: {
+          postMessage: mockPostMessage,
+        },
+      }));
+
+      slackChannel = new SlackChannel(mockToken, mockChannelId);
+      await slackChannel.send(mockMessage);
+
+      // Verify postMessage was called with correct parameters
+      expect(mockPostMessage).toHaveBeenCalledWith({
+        channel: mockChannelId,
+        text: mockMessage,
+      });
+
+      // Verify console.log was called with success message
+      expect(console.log).toHaveBeenCalledWith(
+        `[Slack] Message sent successfully: ${mockTimestamp}`
+      );
+    });
+
+    it("should handle missing timestamp in response", async () => {
+      // Mock response without timestamp
+      const mockPostMessage = vi.fn().mockResolvedValue({});
+      (WebClient as unknown as Mock).mockImplementation(() => ({
+        chat: {
+          postMessage: mockPostMessage,
+        },
+      }));
+
+      slackChannel = new SlackChannel(mockToken, mockChannelId);
+      await slackChannel.send("Test message");
+
+      expect(console.log).toHaveBeenCalledWith(
+        "[Slack] Message sent successfully: unknown"
+      );
+    });
+
+    it("should throw error when message sending fails", async () => {
+      const errorMessage = "API error";
+
+      // Mock failed response
+      const mockPostMessage = vi
+        .fn()
+        .mockRejectedValue(new Error(errorMessage));
+      (WebClient as unknown as Mock).mockImplementation(() => ({
+        chat: {
+          postMessage: mockPostMessage,
+        },
+      }));
+
+      slackChannel = new SlackChannel(mockToken, mockChannelId);
+
+      await expect(slackChannel.send("Test message")).rejects.toThrow(
+        `Slack notification failed: ${errorMessage}`
+      );
+
+      expect(console.error).toHaveBeenCalledWith(
+        `[Slack] Failed to send message: ${errorMessage}`
+      );
+    });
+  });
 });

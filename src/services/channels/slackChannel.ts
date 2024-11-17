@@ -9,7 +9,6 @@ export class SlackChannel {
         "Missing Slack configuration (SLACK_BOT_TOKEN or SLACK_CHANNEL_ID)"
       );
     }
-
     this.channelId = slackChannelId;
     this.slackClient = new WebClient(slackToken);
   }
@@ -20,8 +19,9 @@ export class SlackChannel {
         channel: this.channelId,
         text: message,
       });
-      console.log("RESPONSE::::::::::", response);
-      console.log(`[Slack] Message sent successfully: ${response.ts}`);
+
+      const timestamp = response?.ts || "unknown";
+      console.log(`[Slack] Message sent successfully: ${timestamp}`);
     } catch (error) {
       console.error(
         `[Slack] Failed to send message: ${(error as any).message}`
