@@ -55,7 +55,7 @@ describe('authService', () => {
     };
     // Act
     (getUserByUsername as Mock).mockResolvedValueOnce(user);
-    (bcrypt.hash as Mock).mockResolvedValueOnce(user.password);
+    (bcrypt.compare as Mock).mockResolvedValueOnce(true);
     const result = await validateUser(user.username, user.password);
     // Assert
     expect(result).toBe(true);

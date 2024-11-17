@@ -11,7 +11,7 @@ const users: User[] = [
   {
     id: 1,
     username: 'admin',
-    password: 'HASH-123456',
+    password: '$2b$10$J1vexoY5GgjPRcfGPBs8xeGwpgL9u3q3.DyRN54FhkoqWM/D33i4K',
     email: 'admin@acme.com',
     createdAt: new Date('1995-12-17T03:24:00'),
   },

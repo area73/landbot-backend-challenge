@@ -27,7 +27,7 @@ describe('User login', () => {
       createdAt: new Date('1995-12-17T03:24:00'),
     };
     (getUserByUsername as Mock).mockResolvedValueOnce(mockUser);
-    (bcrypt.hash as Mock).mockResolvedValueOnce(mockUser.password);
+    (bcrypt.compare as Mock).mockResolvedValueOnce(true);
     await request(app)
       .post(config.authEntryPoint + authRoutes.login)
       .send({

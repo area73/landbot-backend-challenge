@@ -9,8 +9,7 @@ export const validateUser = async (
   if (!user) {
     return false; // User does not exist
   }
-  const hashedPassword = await bcrypt.hash(password, 10);
-  return user.password === hashedPassword;
+  return await bcrypt.compare(password, user.password);
 };
 
 interface NewUser {
