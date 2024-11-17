@@ -1,9 +1,9 @@
-import { Router } from "express";
-import { notify } from "../controllers/apiController";
-import { notifyPayload } from "../middleware/notifyPayloadMiddleware";
+import { Router } from 'express';
+import { notify } from '../controllers/apiController';
+import { notifyPayload } from '../middleware/notifyPayloadMiddleware';
 
 export const apiRoutes = {
-  notify: "/notify",
+  notify: '/notify',
 };
 
 const router = Router();

@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
-import { validateUser } from "../services/authService";
-import { generateToken } from "../utils/jwtUtils";
+import { Request, Response } from 'express';
+import { validateUser } from '../services/authService';
+import { generateToken } from '../utils/jwtUtils';
 
 export const messages = {
-  invalidCredentials: "Invalid credentials",
-  userRegistered: "User registered",
-  noUserSet: "No user set",
+  invalidCredentials: 'Invalid credentials',
+  userRegistered: 'User registered',
+  noUserSet: 'No user set',
 } as const;
 
 /**

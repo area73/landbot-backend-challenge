@@ -1,9 +1,9 @@
-import express, { type Application } from "express";
-import cors from "cors";
-import { authRouter } from "./routes/authRoutes";
-import { apiRouter } from "./routes/apiRoutes";
-import { config } from "./config";
-import { verifyToken } from "./middleware/authMiddleware";
+import express, { type Application } from 'express';
+import cors from 'cors';
+import { authRouter } from './routes/authRoutes';
+import { apiRouter } from './routes/apiRoutes';
+import { config } from './config';
+import { verifyToken } from './middleware/authMiddleware';
 
 const app: Application = express();
 

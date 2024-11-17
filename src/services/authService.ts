@@ -1,5 +1,5 @@
-import { getUserByUsername, saveUser, type User } from "../data/userRepository";
-import bcrypt from "bcrypt";
+import { getUserByUsername, saveUser, type User } from '../data/userRepository';
+import bcrypt from 'bcrypt';
 
 export const validateUser = async (
   username: string,
@@ -24,8 +24,7 @@ export const createUser = async ({ username, password, email }: NewUser) => {
   const existingUser = await getUserByUsername(username);
 
   if (existingUser) {
-    const error = new Error("Username already exists");
-    (error as any).code = "USER_EXISTS";
+    const error = new Error('Username already exists');
     throw error;
   }
   // Hash the password

@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
 export const messages = {
   noTopic: "Invalid or missing 'topic'",
@@ -11,12 +11,12 @@ export const notifyPayload = (
   next: NextFunction
 ) => {
   const { topic, message } = req.body;
-  if (!topic || typeof topic !== "string") {
+  if (!topic || typeof topic !== 'string') {
     res.status(400).json({ error: messages.noTopic });
     return;
   }
 
-  if (!message || typeof message !== "string") {
+  if (!message || typeof message !== 'string') {
     res.status(400).json({ error: messages.noMessage });
     return;
   }

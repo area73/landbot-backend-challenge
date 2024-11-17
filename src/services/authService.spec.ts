@@ -1,9 +1,9 @@
-import type { Mock } from "vitest";
-import { createUser, validateUser } from "./authService";
-import bcrypt from "bcrypt";
-import { getUserByUsername } from "../data/userRepository";
+import type { Mock } from 'vitest';
+import { createUser, validateUser } from './authService';
+import bcrypt from 'bcrypt';
+import { getUserByUsername } from '../data/userRepository';
 
-vi.mock(import("../data/userRepository"), async (importOriginal) => {
+vi.mock(import('../data/userRepository'), async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,
@@ -11,15 +11,15 @@ vi.mock(import("../data/userRepository"), async (importOriginal) => {
   };
 });
 
-vi.mock("bcrypt");
+vi.mock('bcrypt');
 
-describe("authService", () => {
-  it("should create a new user", async () => {
+describe('authService', () => {
+  it('should create a new user', async () => {
     // Arrange
     const newUser = {
-      username: "testuser",
-      password: "password",
-      email: "wadus@gmail.com",
+      username: 'testuser',
+      password: 'password',
+      email: 'wadus@gmail.com',
     };
     // just make sure that we are not using a user that is already in the database
     (getUserByUsername as Mock).mockResolvedValueOnce(null);
@@ -31,27 +31,27 @@ describe("authService", () => {
     expect(result.email).toBe(newUser.email);
   });
 
-  it("should not create a user if the username already exists", async () => {
+  it('should not create a user if the username already exists', async () => {
     // Arrange
     const existingUser = {
       id: 1,
-      username: "existing user",
-      password: "password",
-      email: "user@gmail.com",
+      username: 'existing user',
+      password: 'password',
+      email: 'user@gmail.com',
     };
     (getUserByUsername as Mock).mockResolvedValueOnce(existingUser);
     // Assert
     await expect(createUser(existingUser)).rejects.toThrow(
-      "Username already exists"
+      'Username already exists'
     );
   });
 
-  it("should validate a user", async () => {
+  it('should validate a user', async () => {
     // Arrange
     const user = {
-      username: "test user",
-      password: "password",
-      email: "user@gmail.com",
+      username: 'test user',
+      password: 'password',
+      email: 'user@gmail.com',
     };
     // Act
     (getUserByUsername as Mock).mockResolvedValueOnce(user);
