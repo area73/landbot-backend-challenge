@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
-import { NotificationService } from './notificationServices';
+import { NotificationService } from './notificationService';
 import { ChannelFactory } from './channels/channelFactory';
 
 // Mock the channel implementation

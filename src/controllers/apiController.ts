@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { NotificationService } from '../services/notificationServices';
+import { NotificationService } from '../services/notificationService';
 const notificationService = new NotificationService();
 
 export const notify = async (req: Request, res: Response) => {
