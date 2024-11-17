@@ -7,7 +7,7 @@ import { messages } from '../middleware/notifyPayloadMiddleware';
 
 const validToken = 'Bearer ' + generateToken({ username: 'admin' });
 
-vi.mock('../services/notificationServices', () => {
+vi.mock('../services/notificationService', () => {
   return {
     NotificationService: vi.fn(() => ({
       notify: vi.fn(),

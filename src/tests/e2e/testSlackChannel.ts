@@ -1,5 +1,5 @@
-import { SlackChannel } from './services/channels/slackChannel';
-import { config } from './config';
+import { SlackChannel } from '../../services/channels/slackChannel';
+import { config } from '../../config';
 
 (async ({ slackToken, slackChannelId }) => {
   const slackChannel = new SlackChannel(slackToken, slackChannelId);
