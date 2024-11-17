@@ -8,15 +8,15 @@
 
 ```json
 {
-  "topic": "sales",
+  "topic": "slack",
   "description": "I need help with the pricing of the enterprise plan"
 }
 ```
 
 - **Output**
 
-  If the topic is `sales`, send a message to a Slack channel.
-  If the topic is `pricing`, send an email.
+  If the topic is `slack`, send a message to a Slack channel.
+  If the topic is `email`, send an email.
 
 - **Scalability**
 
@@ -32,17 +32,49 @@
 - Use Express.js for API handling.
 - Choose Slack for implementation and mock email integration.
 
-## STEPS
+![alt text](a-team-plan.gif)
+
+### STEPS
 
 - Create a Node.js project with Express.js
-- Add CORS middleware for cross-origin requests.
-- Add body-parser middleware for JSON body parsing.
-- Add JWT middleware for authentication.
-  **JSON web token(JWT)** is a JSON Object which is used to securely transfer information over the web(between two parties). It is generally used for authentication systems and can also be used for information exchange.
-- Add test framework Vitest & supertest
+- Create a tokenized API to minimize DOS attacks and unauthorized access
+- Add CORS, body-parser and JWT middleware
+- Add test framework Vitest & supertest for unit and integration tests
+- Create an endpoint for making the notification
+- Implement the logic to send messages to Slack or email based on the topic
+- Dockerize the app
 
-2. Create a POST endpoint to receive the JSON body.
+### Directories
 
-3. Implement the logic to send messages to Slack or email based on the topic.
+```shell
+landbot-backend-challenge/
+├── src/            # Main application source code
+│ ├── config.ts     # Centralized configuration based on process.env (e.g., ports, base routes)
+│ ├── middleware/   # Custom middlewares
+│ ├── routes/       # API and authentication route definitions
+│ ├── controllers/  # Controllers handling route logic
+│ ├── services/     # Business logic and data connections
+│ ├── data/         # Data management, repositories (mock, databases, or models)
+│ ├── utils/        # Reusable utility functions
+│ └── tests/        # Automated application tests
+│ └── e2e/          # End-to-end tests
+├── Dockerfile      # Docker configuration file
 
-4. Dockerize the app.
+```
+
+### Middlewares
+
+- CORS is used to enable requests from other origins. I have left a comment indicating that, in production, it should be configured more restrictively.
+- `express.json()` and `express.urlencoded()` handle the body data of requests in JSON and URL-encoded formats.
+- A custom middleware `verifyToken` ensures that protected routes require a valid token.
+- A custom middleware `notifyPayload` validates the request payload and normalizes it for processing.
+
+### Routes
+
+- `authRouter`: Manages routes related to authentication.
+- `apiRouter`: Manages general API routes. These routes also require the payload to be validated and normalized, and for the request to have an authentication token.
+
+### Services
+
+- The `services` directory contains the logic for handling messages based on the reference channel.
+  In this case, a notification service is implemented that sends messages to Slack or Email based on the topic, and a factory is used for creating other channels, making it extensible and modular.
