@@ -1,4 +1,4 @@
-import { WebClient } from "@slack/web-api";
+import { WebClient } from '@slack/web-api';
 export class SlackChannel {
   private slackClient: WebClient;
   private channelId: string;
@@ -6,7 +6,7 @@ export class SlackChannel {
   constructor(slackToken: string, slackChannelId: string) {
     if (!slackToken || !slackChannelId) {
       throw new Error(
-        "Missing Slack configuration (SLACK_BOT_TOKEN or SLACK_CHANNEL_ID)"
+        'Missing Slack configuration (SLACK_BOT_TOKEN or SLACK_CHANNEL_ID)'
       );
     }
     this.channelId = slackChannelId;
@@ -20,13 +20,13 @@ export class SlackChannel {
         text: message,
       });
 
-      const timestamp = response?.ts || "unknown";
+      const timestamp = response?.ts || 'unknown';
       console.log(`[Slack] Message sent successfully: ${timestamp}`);
     } catch (error) {
       console.error(
-        `[Slack] Failed to send message: ${(error as any).message}`
+        `[Slack] Failed to send message: ${(error as Error).message}`
       );
-      throw new Error(`Slack notification failed: ${(error as any).message}`);
+      throw new Error(`Slack notification failed: ${(error as Error).message}`);
     }
   }
 }

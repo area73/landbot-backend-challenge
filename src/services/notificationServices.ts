@@ -1,4 +1,4 @@
-import { ChannelFactory } from "./channels/channelFactory";
+import { ChannelFactory } from './channels/channelFactory';
 
 export class NotificationService {
   async notify(topic: string, message: string) {
@@ -7,7 +7,7 @@ export class NotificationService {
       await channel.send(message);
       console.log(`Message sent to ${topic} channel`);
     } catch (error) {
-      console.error(`Failed to send notification: ${(error as any).message}`);
+      console.error(`Failed to send notification: ${(error as Error).message}`);
       throw error;
     }
   }

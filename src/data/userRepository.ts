@@ -10,17 +10,17 @@ export interface User {
 const users: User[] = [
   {
     id: 1,
-    username: "admin",
-    password: "HASH-123456",
-    email: "admin@acme.com",
-    createdAt: new Date("1995-12-17T03:24:00"),
+    username: 'admin',
+    password: 'HASH-123456',
+    email: 'admin@acme.com',
+    createdAt: new Date('1995-12-17T03:24:00'),
   },
   {
     id: 2,
-    username: "user",
-    password: "HASH-password",
-    email: "user@acme.com",
-    createdAt: new Date("2022-11-14T03:11:00"),
+    username: 'user',
+    password: 'HASH-password',
+    email: 'user@acme.com',
+    createdAt: new Date('2022-11-14T03:11:00'),
   },
 ];
 

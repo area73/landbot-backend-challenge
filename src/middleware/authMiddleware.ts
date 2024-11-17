@@ -1,12 +1,12 @@
-import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 
-import { config } from "../config";
+import { config } from '../config';
 
 export const messages = {
   invalidCredentials: "'Invalid or expired credentials",
-  authMalformed: "Authorization token missing or malformed",
-  tokenRequired: "Token is required",
+  authMalformed: 'Authorization token missing or malformed',
+  tokenRequired: 'Token is required',
 } as const;
 
 export const verifyToken = (
@@ -22,18 +22,18 @@ export const verifyToken = (
     return;
   }
 
-  if (!authHeader.startsWith("Bearer ")) {
+  if (!authHeader.startsWith('Bearer ')) {
     res.status(401).json({ message: messages.authMalformed });
     return;
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.split(' ')[1];
 
   try {
     const decoded = jwt.verify(token, config.secretKey);
     req.user = decoded;
     next();
-  } catch (err) {
+  } catch (_err) {
     res.status(403).json({ message: messages.invalidCredentials });
   }
 };
