@@ -63,7 +63,7 @@ This endpoint receives a POST request with the following JSON body:
 
 and returns a JWT token, which we will need to use later in the API call.
 
-### POST /api/notify
+### POST /api/v1/notify
 
 This endpoint receives a POST request with the following JSON body:
 
