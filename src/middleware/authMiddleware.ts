@@ -30,8 +30,8 @@ export const verifyToken = (
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, config.secretKey);
-    req.user = decoded;
+    const decoded = jwt.verify(token, config.secretKey) as jwt.JwtPayload;
+    req.user = decoded as Record<string, string>;
     next();
   } catch (_err) {
     res.status(403).json({ message: messages.invalidCredentials });
