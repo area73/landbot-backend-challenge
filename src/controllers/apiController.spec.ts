@@ -7,6 +7,14 @@ import { messages } from '../middleware/notifyPayloadMiddleware';
 
 const validToken = 'Bearer ' + generateToken({ username: 'admin' });
 
+vi.mock('../services/notificationServices', () => {
+  return {
+    NotificationService: vi.fn(() => ({
+      notify: vi.fn(),
+    })),
+  };
+});
+
 describe('API: Notify', () => {
   it('should respond to POST  with status code 403 forbidden if no authorization send', async () => {
     await request(app)
