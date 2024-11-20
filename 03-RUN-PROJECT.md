@@ -8,7 +8,6 @@ To run the project, follow these steps:
 4. Create a `.env` file in the root of the project and add the following environment variables:
 
 - PORT
-- SECRET_KEY
 - SLACK_BOT_TOKEN
 - SLACK_CHANNEL_ID
 
